@@ -15,10 +15,11 @@ const Calendar = props => {
     })
 
     const next = () => {
-        setState({ 
+        setState({
             currentMonth: currentMonth = (currentMonth + 1) % 12,
             currentYear: currentYear = (currentMonth === 0) ? currentYear + 1 : currentYear
         });
+        cells(currentMonth, currentYear);
     }
 
     const previous = () => {
@@ -26,31 +27,35 @@ const Calendar = props => {
             currentMonth: currentMonth = (currentMonth === 0) ? 11 : currentMonth - 1,
             currentYear: currentYear = (currentMonth === 11) ? currentYear - 1 : currentYear
         });
+        cells(currentMonth, currentYear);
     }
 
-    const cells = () => {
-        let firstDay = (new Date(currentMonth, currentYear)).getDay();
-        let daysInMonth = 32 - new Date(currentYear, currentMonth, 32).getDate();
+    const cells = (month, year) => {
+        let firstDay = (new Date(year, month)).getDay();
+        let daysInMonth = 32 - new Date(year, month, 32).getDate();
         let tbl = document.getElementById("calendar-body");
+        let monthAndYear = document.getElementById("monthAndYear");
         let date = 1;
 
         tbl.innerHTML = "";
 
-        for(let i = 0; i < 6; i++) {
+        monthAndYear.innerHTML = monthNames[month] + " " + year;
+
+        for (let i = 0; i < 6; i++) {
             let row = document.createElement("tr");
 
-            for(let j = 0; j < 7; j++) {
-                if(i === 0 && j < firstDay) {
+            for (let j = 0; j < 7; j++) {
+                if (i === 0 && j < firstDay) {
                     let cell = document.createElement("td");
                     let cellText = document.createTextNode("");
                     cell.appendChild(cellText);
                     row.appendChild(cell);
-                } else if(date > daysInMonth) {
+                } else if (date > daysInMonth) {
                     break;
                 } else {
                     let cell = document.createElement("td");
                     let cellText = document.createTextNode(date);
-                    if(date === today.getDate() && currentYear === today.getFullYear() && currentMonth === today.getMonth()) {
+                    if (date === today.getDate() && currentYear === today.getFullYear() && currentMonth === today.getMonth()) {
                         cell.classList.add("bg-info");
                     }
                     cell.appendChild(cellText);
@@ -63,32 +68,32 @@ const Calendar = props => {
     }
 
     useEffect(() => {
-        cells();
+        cells(currentMonth, currentYear);
     }, []);
 
     return (
         <>
-        <table>
-            <thead>
-                <tr>
-                    <th>{monthNames[state.currentMonth]}</th>
-                    <th>{state.currentYear}</th>
-                </tr>
-                <tr>
-                    <th>Su</th>
-                    <th>Mo</th>
-                    <th>Tu</th>
-                    <th>We</th>
-                    <th>Th</th>
-                    <th>Fr</th>
-                    <th>Sa</th>
-                </tr>
-            </thead>
-            <tbody id="calendar-body">
-                
-            </tbody>
-            
-        </table>
+            <div>
+                <div>
+                    <h3 id="monthAndYear"></h3>
+                    <table id="calendar">
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="calendar-body">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             <button onClick={previous}>Previous</button>
             <button onClick={next}>Next</button>
         </>
