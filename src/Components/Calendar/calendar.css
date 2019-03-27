@@ -1,4 +1,13 @@
 .bg-info {
-    background-color: blue;
+    color: #CACCCD
 }
 
+th {
+    width: 39px !important;
+    height: 20px !important;
+}
+
+tr {
+    width: 39px;
+    height: 38px;
+}

@@ -55,7 +55,7 @@ const Calendar = props => {
                 } else {
                     let cell = document.createElement("td");
                     let cellText = document.createTextNode(date);
-                    if (date === today.getDate() && currentYear === today.getFullYear() && currentMonth === today.getMonth()) {
+                    if (date < today.getDate()) {
                         cell.classList.add("bg-info");
                     }
                     cell.appendChild(cellText);
